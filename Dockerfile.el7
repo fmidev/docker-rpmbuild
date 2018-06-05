@@ -1,9 +1,6 @@
 FROM centos:7
 MAINTAINER Mikko Rauhala <mikko@rauhala.net>
 
-ENV http_proxy http://wwwcache.fmi.fi:8080
-ENV https_proxy http://wwwcache.fmi.fi:8080
-
 RUN rpm -ivh https://download.fmi.fi/smartmet-open/rhel/7/x86_64/smartmet-open-release-17.9.28-1.el7.fmi.noarch.rpm \
     	     https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
 	     https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-3.noarch.rpm
