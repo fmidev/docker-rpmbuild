@@ -1,0 +1,6 @@
+[local]
+name=Local Repository
+baseurl=file:///home/rpmbuild/rpmbuild/RPMS/x86_64/
+enabled=1
+gpgcheck=0
+protect=1
