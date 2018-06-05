@@ -7,7 +7,6 @@ REPOSITORIES="smartmet-library-newbase \
               smartmet-library-spine \
               smartmet-library-locus \
               smartmet-library-tron \
-              smartmet-library-imagine \
               smartmet-server \
               smartmet-engine-sputnik \
               smartmet-engine-querydata \
