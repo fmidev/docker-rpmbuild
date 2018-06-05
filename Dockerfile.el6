@@ -1,0 +1,26 @@
+FROM centos:6
+MAINTAINER Mikko Rauhala <mikko@rauhala.net>
+
+RUN rpm -ivh https://download.fmi.fi/smartmet-open/rhel/6/x86_64/smartmet-open-release-17.11.7-1.el6.fmi.noarch.rpm \
+    	     https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
+	     https://download.postgresql.org/pub/repos/yum/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-3.noarch.rpm
+
+RUN sed -i '/\[smartmet-open\]/a exclude=smartmet-library-*' /etc/yum.repos.d/smartmet-open.repo
+RUN cat /etc/yum.repos.d/smartmet-open.repo
+RUN yum install -y rpmdevtools gcc-c++ make createrepo yum-utils git sudo wget && \
+    yum clean all && \
+    rm -r -f /var/cache/*
+ADD docker-rpmbuild.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-rpmbuild.sh
+ADD local.repo /etc/yum.repos.d/
+
+RUN useradd rpmbuild
+RUN echo "rpmbuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/rpmbuild
+USER rpmbuild
+RUN rpmdev-setuptree
+RUN mkdir /home/rpmbuild/rpmbuild/RPMS/x86_64
+USER root
+RUN createrepo /home/rpmbuild/rpmbuild/RPMS/x86_64/
+USER rpmbuild
+
+ENTRYPOINT ["/usr/local/bin/docker-rpmbuild.sh"]
