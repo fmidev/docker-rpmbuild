@@ -15,9 +15,15 @@ sudo yum repolist
 sudo yum --disablerepo="*" --enablerepo="local" list available
 
 cd $HOME/rpmbuild/SOURCES/
-git clone $1
-REPO=$(ls -1)
-tar zcvf $REPO.tar.gz --exclude-vcs $REPO
-sudo yum-builddep -y $REPO/*.spec
-rpmbuild -ba $REPO/*.spec
+# If argument is folder, use that, else clone from github
+if [[ "$1" =~ "^.*://" ]]; then
+  git clone $1
+  REPO=$(ls -1)
+else
+  REPO=$1
+fi
+
+tar zcvf $REPO.tar.gz --exclude-vcs /$REPO
+sudo yum-builddep -y /$REPO/*.spec
+rpmbuild -ba /$REPO/*.spec
 createrepo $HOME/rpmbuild/RPMS/x86_64
