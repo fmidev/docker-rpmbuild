@@ -21,6 +21,7 @@ if [[ "$1" =~ "^.*://" ]]; then
   REPO=$(ls -1)
 else
   REPO=$1
+  rsync -vr /src/$REPO .
 fi
 
 tar zcvf $REPO.tar.gz --exclude-vcs $REPO
