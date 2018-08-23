@@ -23,7 +23,7 @@ else
   REPO=$1
 fi
 
-tar zcvf $REPO.tar.gz --exclude-vcs /$REPO
-sudo yum-builddep -y /$REPO/*.spec
-rpmbuild -ba /$REPO/*.spec
+tar zcvf $REPO.tar.gz --exclude-vcs $REPO
+sudo yum-builddep -y $REPO/*.spec
+rpmbuild -ba $REPO/*.spec
 createrepo $HOME/rpmbuild/RPMS/x86_64
