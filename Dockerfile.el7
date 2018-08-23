@@ -21,7 +21,6 @@ RUN echo "rpmbuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/rpmbuild
 USER rpmbuild
 RUN rpmdev-setuptree
 RUN mkdir /home/rpmbuild/rpmbuild/RPMS/x86_64
-USER root
 RUN createrepo /home/rpmbuild/rpmbuild/RPMS/x86_64/
 USER rpmbuild
 
