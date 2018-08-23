@@ -21,7 +21,5 @@ RUN echo "rpmbuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/rpmbuild
 USER rpmbuild
 RUN rpmdev-setuptree
 RUN mkdir /home/rpmbuild/rpmbuild/RPMS/x86_64
-RUN createrepo /home/rpmbuild/rpmbuild/RPMS/x86_64/
-USER rpmbuild
 
 ENTRYPOINT ["/usr/local/bin/docker-rpmbuild.sh"]
