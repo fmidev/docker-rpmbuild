@@ -16,7 +16,7 @@ sudo yum --disablerepo="*" --enablerepo="local" list available
 
 cd $HOME/rpmbuild/SOURCES/
 # If argument is folder, use that, else clone from github
-if [[ "$1" =~ "^.*://" ]]; then
+if [[ "$1" == http?://* ]]; then
   git clone $1
   REPO=$(ls -1)
 else
