@@ -8,7 +8,11 @@ RUN curl -O /etc/yum.repos.d/libjpeg-turbo.repo https://libjpeg-turbo.org/pmwiki
 
 RUN sed -i '/\[smartmet-open\]/a exclude=smartmet-library-*' /etc/yum.repos.d/smartmet-open.repo
 RUN cat /etc/yum.repos.d/smartmet-open.repo
-RUN yum install -y rpmdevtools gcc-c++ make createrepo yum-utils git sudo wget nodejs npm && \
+RUN yum install -y rpmdevtools make createrepo yum-utils git sudo wget nodejs npm centos-release-scl && \
+    yum clean all && \
+    rm -r -f /var/cache/*
+RUN yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+    yum install -y devtoolset-7 cmake3 curl-devel git openssl-devel && \
     yum clean all && \
     rm -r -f /var/cache/*
 RUN npm install -g firebase-tools
