@@ -8,23 +8,17 @@ RUN curl -O /etc/yum.repos.d/libjpeg-turbo.repo https://libjpeg-turbo.org/pmwiki
 
 RUN sed -i '/\[smartmet-open\]/a exclude=smartmet-library-*' /etc/yum.repos.d/smartmet-open.repo
 RUN cat /etc/yum.repos.d/smartmet-open.repo
-RUN yum install -y rpmdevtools make createrepo yum-utils git sudo wget nodejs npm centos-release-scl && \
+RUN yum install -y rpmdevtools make createrepo gcc-c++ yum-utils git sudo wget nodejs npm centos-release-scl && \
     yum clean all && \
     rm -r -f /var/cache/*
-#RUN yum-config-manager --enable rhel-server-rhscl-7-rpms && \
-#    yum install -y devtoolset-7 cmake3 curl-devel git openssl-devel && \
-#    yum clean all && \
-#    rm -r -f /var/cache/*
-#RUN /opt/rh/devtoolset-7/enable
-#ENV PATH=/opt/app-root/src/bin:/opt/app-root/bin:/opt/rh/devtoolset-7/root/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN npm install -g firebase-tools
-ADD docker-rpmbuild.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-rpmbuild.sh
 ADD local.repo /etc/yum.repos.d/
 RUN echo ip_resolve=4 >> /etc/yum.conf
-
 RUN useradd rpmbuild
 RUN echo "rpmbuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/rpmbuild
+ADD docker-rpmbuild.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-rpmbuild.sh
+
 USER rpmbuild
 RUN rpmdev-setuptree
 RUN mkdir /home/rpmbuild/rpmbuild/RPMS/x86_64
