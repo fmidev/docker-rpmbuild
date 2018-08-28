@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[[ -z $RPM_BUILD_NCPUS ]] && RPM_BUILD_NCPUS=2
+
 # Test if proxy is needed
 wget -q -t 1 --spider www.google.com
 if [ $? -ne 0 ]; then
@@ -26,5 +28,5 @@ fi
 
 tar zcvf $REPO.tar.gz --exclude-vcs $REPO
 sudo yum-builddep -y $REPO/*.spec
-rpmbuild -ba $REPO/*.spec
+rpmbuild -ba --define "_smp_mflags -j$RPM_BUILD_NCPUS" $REPO/*.spec
 createrepo $HOME/rpmbuild/RPMS/x86_64
