@@ -21,6 +21,8 @@ RUN chmod +x /usr/local/bin/docker-rpmbuild.sh
 
 USER rpmbuild
 RUN rpmdev-setuptree
+RUN sed -i 's/-gt 3/-gt 0/g' /home/rpmbuild/.rpmmacros
+RUN sed -i 's/-j3/-j2/g' /home/rpmbuild/.rpmmacros
 RUN mkdir /home/rpmbuild/rpmbuild/RPMS/x86_64
 
 ENTRYPOINT ["/usr/local/bin/docker-rpmbuild.sh"]
