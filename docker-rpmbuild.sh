@@ -1,6 +1,13 @@
 #!/bin/sh
+set -e
 
 [[ -z $RPM_BUILD_NCPUS ]] && RPM_BUILD_NCPUS=2
+
+if ! whoami &> /dev/null; then
+  if [ -w /etc/passwd ]; then
+    echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd
+  fi
+fi
 
 # Test if proxy is needed
 wget -q -t 1 --spider www.google.com
@@ -11,6 +18,8 @@ if [ $? -ne 0 ]; then
     sudo sh -c 'echo proxy=http://wwwproxy.fmi.fi:8080 >> /etc/yum.conf'
 fi
 
+free -h
+ls -la $HOME/rpmbuild/RPMS/
 mkdir -p $HOME/rpmbuild/RPMS/x86_64
 createrepo $HOME/rpmbuild/RPMS/x86_64
 sudo yum repolist
